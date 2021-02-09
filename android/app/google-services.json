@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "387271839359",
+    "project_id": "camera-recorder-ca984",
+    "storage_bucket": "camera-recorder-ca984.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:387271839359:android:e092dd7d9a52b2c3e5794a",
+        "android_client_info": {
+          "package_name": "com.example.camera_recorder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "387271839359-67cvr8d23nrpgq4slogaquvubecs6cdm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEpDT14Wtxqlkh4Z-ZxWtLbl_uOmdeBH4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "387271839359-67cvr8d23nrpgq4slogaquvubecs6cdm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
