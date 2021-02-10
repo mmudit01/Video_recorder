@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Camera Recorder</string>
+    <string name="facebook_app_id">267240918125316</string>
+    <string name="fb_login_protocol_scheme">fb267240918125316</string>
+</resources>

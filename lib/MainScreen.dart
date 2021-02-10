@@ -1,6 +1,10 @@
+import 'package:camera_recorder/login_page.dart';
 import 'package:chewie/chewie.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'dart:io';
@@ -31,141 +35,174 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Center(
-          child: Container(
-            height: videoFile != null
-                ? MediaQuery.of(context).size.height * (80 / 100)
-                : MediaQuery.of(context).size.height * (5 / 100),
-            width: videoFile != null
-                ? MediaQuery.of(context).size.width * (100 / 100)
-                : MediaQuery.of(context).size.width * (027 / 100),
-            child: videoFile == null
-                ? Center(
-                    child: Container(
-                      child: RaisedButton(
-                        child: Row(
-                          children: [Text('Record'), Icon(Icons.videocam)],
+        child: Stack(
+          children: [
+            Center(
+              child: Container(
+                height: videoFile != null
+                    ? MediaQuery.of(context).size.height * (80 / 100)
+                    : MediaQuery.of(context).size.height * (5 / 100),
+                width: videoFile != null
+                    ? MediaQuery.of(context).size.width * (100 / 100)
+                    : MediaQuery.of(context).size.width * (027 / 100),
+                child: videoFile == null
+                    ? Center(
+                        child: Container(
+                          child: RaisedButton(
+                            child: Row(
+                              children: [Text('Record'), Icon(Icons.videocam)],
+                            ),
+                            onPressed: () {
+                              _camera();
+                            },
+                          ),
                         ),
-                        onPressed: () {
-                          _camera();
-                        },
-                      ),
-                    ),
-                  )
-                : Column(
-                    children: [
-                      Container(
-                        height: videoFile != null
-                            ? MediaQuery.of(context).size.height * (80 / 100)
-                            : MediaQuery.of(context).size.height * (5 / 100),
-                        width: videoFile != null
-                            ? MediaQuery.of(context).size.width * (100 / 100)
-                            : MediaQuery.of(context).size.width * (027 / 100),
-                        child: FittedBox(
-                          fit: BoxFit.contain,
-                          child: mounted
-                              ? Column(
-                                  children: [
-                                    Chewie(
-                                      controller: ChewieController(
-                                        videoPlayerController:
-                                            VideoPlayerController.file(
-                                                videoFile),
-                                        aspectRatio: 1 / 2,
-                                        autoPlay: true,
-                                        looping: true,
-                                      ),
-                                    ),
-                                    Row(
+                      )
+                    : Column(
+                        children: [
+                          Container(
+                            height: videoFile != null
+                                ? MediaQuery.of(context).size.height *
+                                    (80 / 100)
+                                : MediaQuery.of(context).size.height *
+                                    (5 / 100),
+                            width: videoFile != null
+                                ? MediaQuery.of(context).size.width *
+                                    (100 / 100)
+                                : MediaQuery.of(context).size.width *
+                                    (027 / 100),
+                            child: FittedBox(
+                              fit: BoxFit.contain,
+                              child: mounted
+                                  ? Column(
                                       children: [
-                                        Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              (5 / 100),
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              (36 / 100),
-                                          child: RaisedButton(
-                                            child: Row(
-                                              children: [
-                                                Text('Record Again'),
-                                                Icon(Icons.videocam)
-                                              ],
-                                            ),
-                                            onPressed: () {
-                                              _camera();
-                                            },
+                                        Chewie(
+                                          controller: ChewieController(
+                                            videoPlayerController:
+                                                VideoPlayerController.file(
+                                                    videoFile),
+                                            aspectRatio: 1 / 2,
+                                            autoPlay: true,
+                                            looping: true,
                                           ),
                                         ),
-                                        Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              (5 / 100),
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              (35 / 100),
-                                          child: RaisedButton(
-                                            child: Row(
-                                              children: [
-                                                Text('Upload'),
-                                                Icon(Icons.videocam)
-                                              ],
-                                            ),
-                                            onPressed: () {
-                                              showDialog(
-                                                barrierDismissible: true,
-                                                context: context,
-                                                builder: (context) => Dialog(
-                                                  backgroundColor:
-                                                      Colors.transparent,
-                                                  elevation: 0,
-                                                  child: Center(
-                                                    child:
-                                                        CircularProgressIndicator(),
-                                                  ),
+                                        Row(
+                                          children: [
+                                            Container(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  (5 / 100),
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  (36 / 100),
+                                              child: RaisedButton(
+                                                child: Row(
+                                                  children: [
+                                                    Text('Record Again'),
+                                                    Icon(Icons.videocam)
+                                                  ],
                                                 ),
-                                              );
-                                              FirebaseStorage storage =
-                                                  FirebaseStorage.instance;
-
-                                              Reference rootReference =
-                                                  storage.ref();
-
-                                              Reference videoFolderReference =
-                                                  rootReference
-                                                      .child("Recordings")
-                                                      .child(
-                                                          "${DateTime.now().millisecondsSinceEpoch}");
-                                              videoFolderReference
-                                                  .putFile(videoFile)
-                                                  .whenComplete(
-                                                () {
-                                                  Navigator.of(context)
-                                                      .pushReplacement(
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          MainScreen(),
+                                                onPressed: () {
+                                                  _camera();
+                                                },
+                                              ),
+                                            ),
+                                            Container(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  (5 / 100),
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  (35 / 100),
+                                              child: RaisedButton(
+                                                child: Row(
+                                                  children: [
+                                                    Text('Upload'),
+                                                    Icon(Icons.videocam)
+                                                  ],
+                                                ),
+                                                onPressed: () {
+                                                  showDialog(
+                                                    barrierDismissible: true,
+                                                    context: context,
+                                                    builder: (context) =>
+                                                        Dialog(
+                                                      backgroundColor:
+                                                          Colors.transparent,
+                                                      elevation: 0,
+                                                      child: Center(
+                                                        child:
+                                                            CircularProgressIndicator(),
+                                                      ),
                                                     ),
                                                   );
+                                                  FirebaseStorage storage =
+                                                      FirebaseStorage.instance;
+
+                                                  Reference rootReference =
+                                                      storage.ref();
+
+                                                  Reference
+                                                      videoFolderReference =
+                                                      rootReference
+                                                          .child("Recordings")
+                                                          .child(
+                                                              "${DateTime.now().millisecondsSinceEpoch}");
+                                                  videoFolderReference
+                                                      .putFile(videoFile)
+                                                      .whenComplete(
+                                                    () {
+                                                      Navigator.of(context)
+                                                          .pushReplacement(
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              MainScreen(),
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
                                                 },
-                                              );
-                                            },
-                                          ),
-                                        ),
+                                              ),
+                                            ),
+                                          ],
+                                        )
                                       ],
                                     )
-                                  ],
-                                )
-                              : Container(),
-                        ),
+                                  : Container(),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+              ),
+            ),
+            GestureDetector(
+              onTap: () async {
+                final googleSignIn = GoogleSignIn();
+                await FirebaseAuth.instance.signOut();
+                final facebookLogin = FacebookLogin();
+                await facebookLogin.logOut();
+                await googleSignIn.signOut();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginPage(),
                   ),
-          ),
+                );
+              },
+              child: Container(
+                margin: EdgeInsets.all(20),
+                alignment: Alignment.topRight,
+                child: Text(
+                  'LogOut',
+                  style: TextStyle(fontSize: 20),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
