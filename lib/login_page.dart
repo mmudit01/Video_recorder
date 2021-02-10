@@ -11,7 +11,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   Future<void> _signInWithGoogle() async {
     try {
-      await auth.signInWithGoogle();
+      user.uid = (await auth.signInWithGoogle()).uid;
     } catch (e) {
       print(e.toString());
     }
@@ -19,7 +19,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _signInWithFacebook() async {
     try {
-      await auth.signInWithFacebook();
+      user.uid = (await auth.signInWithFacebook()).uid;
     } catch (e) {
       print(e.toString());
     }
@@ -83,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => MainScreen(),
+                              builder: (context) => MainScreen(user.uid),
                             ),
                           );
                         },
@@ -114,7 +114,8 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => MainScreen(),
+                                builder: (context) =>
+                                    MainScreen(auth.toString()),
                               ),
                             );
                           },

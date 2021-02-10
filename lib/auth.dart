@@ -5,8 +5,10 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class User {
   User({this.uid});
-  final String uid;
+  String uid;
 }
+
+final User user = User();
 
 class Auth {
   Future<User> signInWithGoogle() async {
@@ -22,6 +24,7 @@ class Auth {
             idToken: googleAuth.idToken,
           ),
         );
+
         return User(uid: authResult.user.uid);
       } else
         throw PlatformException(

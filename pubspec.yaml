@@ -24,15 +24,18 @@ dependencies:
   flutter:
     sdk: flutter
   chewie: ^0.12.2
+  cloud_firestore: ^0.16.0
   cupertino_icons: ^1.0.0
   firebase_auth: ^0.20.0+1
   firebase_core: ^0.7.0
+  firebase_database: ^6.0.0
   firebase_storage: ^7.0.0
   flutter_facebook_login: ^3.0.0
   font_awesome_flutter: ^8.11.0
   google_sign_in: ^4.5.9
   image_picker: ^0.6.7+22
   rxdart: ^0.25.0
+  uuid: ^2.2.2
   video_player: ^1.0.1
 
 dev_dependencies:
